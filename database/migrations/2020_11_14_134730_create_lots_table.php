@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateLotsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->enum('role', ["customer", "seller"])->default('customer');
-            $table->rememberToken();
+        Schema::create('lots', function (Blueprint $table) {
+            $table->unsignedBigInteger('product_id');
+            $table->float("added_qty");
+            $table->float("currect_qty");
             $table->timestamps();
+
+            $table->primary("created_at");
+            $table->foreign("product_id")->references("id")->on("products");
         });
     }
 
@@ -30,6 +31,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('lots');
     }
 }
