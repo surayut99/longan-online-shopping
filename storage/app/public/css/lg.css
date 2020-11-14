@@ -1,0 +1,29 @@
+.lg-space-r>* {
+    margin-right: 1em;
+}
+
+.lg-space-l>* {
+    margin-left: 1em;
+}
+
+.lg-space-t>* {
+    margin-top: 1em;
+}
+
+.lg-space-b>* {
+    margin-bottom: 1em;
+}
+
+.lg-main,
+.lg-nav {
+    font-family: 'Sarabun', sans-serif;
+}
+
+.lg-nav {
+    height: 70px !important;
+}
+
+.lg-nav-menu>* {
+    font-size: larger;
+    font-weight: bold;
+}
