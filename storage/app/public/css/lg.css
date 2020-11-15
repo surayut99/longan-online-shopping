@@ -29,10 +29,19 @@
 }
 
 .lg-space-p>p {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.25rem !important;
 }
 
 .lg-flex {
     flex-flow: wrap;
     justify-content: start;
+}
+
+.lg-img {
+    object-fit: cover;
+    max-width: 15rem;
+}
+
+.lg-fill {
+    overflow: hidden;
 }

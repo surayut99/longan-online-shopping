@@ -1,6 +1,8 @@
 <div class="d-flex lg-nav navbar navbar-expand-lg navbar-light lg-nav-menu" style="background-color: whitesmoke">
   <div class="d-flex mr-auto">
-    LOGO
+    <a href="{{route('pages.home')}}">
+      LOGO
+    </a>
   </div>
 
   <div class="d-flex ml-auto lg-space-l">

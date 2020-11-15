@@ -62,7 +62,6 @@
         </div>
       </form>
 
-
       <form id="collapseExample" class="mt-3 collapse" action="" method="POST">
         @method('delete')
         @csrf
@@ -73,7 +72,6 @@
         </div>
       </form>
     </div>
-
   </div>
 </div>
 @endsection
