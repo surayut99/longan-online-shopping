@@ -2,24 +2,25 @@
 
 @section('content')
 
-<div>
+<div class="container">
 
   <h1 class>รายการสินค้าทั้งหมด</h1>
 
-  <button class="btn btn-primary">เพิ่มสินค้า</button>
+  <a href="{{route('products.create')}}" class="btn btn-primary">เพิ่มสินค้า</a>
 
-  <div class="my-3 d-flex">
-    {{-- loop for showing products --}}
-    <div class="card" style="width: 15rem;">
-      <img class="card-img-top" src="https://scontent-sin6-2.xx.fbcdn.net/v/t1.0-9/51328971_1479556668841765_1729438228924071936_o.jpg?_nc_cat=110&ccb=2&_nc_sid=09cbfe&_nc_eui2=AeGChmM_29uz2_0Vuyrgd0kTjrJdQcSTzLmOsl1BxJPMuVbsc6QAhf9qXmKX_NXurXMLXfjrmOw4DcgYTb0Gh1rG&_nc_ohc=b9cLmp-qZd0AX9_E4rf&_nc_ht=scontent-sin6-2.xx&oh=09762d1d67b70e7d8dbe6fd6cd1d33ab&oe=5FD3B9F6">
+  <div class="my-3 d-flex lg-flex lg-space-r" sty>
+    @foreach($products as $product)
+    <div class="card my-3" style="width: 15rem;">
+      <img class="card-img-top" src="{{asset($product->product_img_path)}}">
       <div class="card-body lg-space-p">
-        <h3 class="card-title">ชื่อสินค้า</h3>
-        <p class="">ราคา: บาท/กิโลกรัม</p>
-        <p class="">คงเหลือ: กิโลกรัม</p>
-        <p class="">แก้ไขเมื่อ: </p>
-        <a href="#" class="btn btn-warning">แก้ไข</a>
+        <h3 class="card-title">{{ $product->product_name }}</h3>
+        <p class="">ราคา: {{ $product->price }} บาท/กิโลกรัม</p>
+        <p class="">คงเหลือทั้งหมด: {{$product->total}} กิโลกรัม</p>
+        <p class="">แก้ไขเมื่อ: <br> {{\Carbon\Carbon::parse($product->lastest_at)->timezone('Asia/Bangkok')->toDateTimeString()}}</p>
+        <a href="{{route('products.edit', ['product' => $product->id])}}" class="btn btn-warning">แก้ไข</a>
       </div>
     </div>
+    @endforeach
   </div>
 </div>
 

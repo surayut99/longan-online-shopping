@@ -16,10 +16,10 @@ class CreateLotsTable extends Migration
         Schema::create('lots', function (Blueprint $table) {
             $table->unsignedBigInteger('product_id');
             $table->float("added_qty");
-            $table->float("currect_qty");
+            $table->float("current_qty");
             $table->timestamps();
 
-            $table->primary("created_at");
+            $table->primary(["created_at", "product_id"]);
             $table->foreign("product_id")->references("id")->on("products");
         });
     }

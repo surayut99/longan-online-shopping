@@ -3,7 +3,7 @@
 @section('content')
 <div class="lg-space-t lg-space-b">
 
-  <h1 class="display-3 text-center">สินค้าทั้งหมด</h1>
+  <h1 class="text-center">สินค้าทั้งหมด</h1>
 
   {{--Loop for showing products --}}
   <div class="card" style="width: 18rem;">
@@ -15,4 +15,5 @@
     </div>
   </div>
 </div>
+
 @endsection

@@ -31,3 +31,8 @@
 .lg-space-p>p {
     margin-bottom: 0.5rem !important;
 }
+
+.lg-flex {
+    flex-flow: wrap;
+    justify-content: start;
+}
