@@ -19,9 +19,6 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("product_id");
 
-            $table->float("order_qty");
-            $table->float("cost");
-
             $table->enum("status", ["purchasing", "verifying", "verified", "deliveried", "cancelled"])->default("purchasing");
 
             $table->string("shipment_detail")->nullable();
