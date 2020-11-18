@@ -1,0 +1,58 @@
++--------+-----------+--------------------------------+---------------------------------+-------------------------------------------------------------------------+------------+
+| Domain | Method    | URI                            | Name                            | Action                                                                  | Middleware |
++--------+-----------+--------------------------------+---------------------------------+-------------------------------------------------------------------------+------------+
+|        | GET|HEAD  | /                              | pages.home                      | App\Http\Controllers\HomePageController@index                           | web        |
+|        | GET|HEAD  | api/user                       |                                 | Closure                                                                 | api        |
+|        |           |                                |                                 |                                                                         | auth:api   |
+|        | GET|HEAD  | forgot-password                | password.request                | Laravel\Fortify\Http\Controllers\PasswordResetLinkController@create     | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | POST      | forgot-password                | password.email                  | Laravel\Fortify\Http\Controllers\PasswordResetLinkController@store      | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | GET|HEAD  | home                           | home                            | App\Http\Controllers\HomeController@index                               | web        |
+|        |           |                                |                                 |                                                                         | auth       |
+|        | POST      | login                          |                                 | App\Http\Controllers\Auth\LoginController@login                         | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | GET|HEAD  | login                          | login                           | App\Http\Controllers\Auth\LoginController@showLoginForm                 | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | POST      | logout                         | logout                          | App\Http\Controllers\Auth\LoginController@logout                        | web        |
+|        | POST      | password/confirm               |                                 | App\Http\Controllers\Auth\ConfirmPasswordController@confirm             | web        |
+|        |           |                                |                                 |                                                                         | auth       |
+|        | GET|HEAD  | password/confirm               | password.confirm                | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm     | web        |
+|        |           |                                |                                 |                                                                         | auth       |
+|        | POST      | password/email                 | password.email                  | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail   | web        |
+|        | POST      | password/reset                 | password.update                 | App\Http\Controllers\Auth\ResetPasswordController@reset                 | web        |
+|        | GET|HEAD  | password/reset                 | password.request                | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm  | web        |
+|        | GET|HEAD  | password/reset/{token}         | password.reset                  | App\Http\Controllers\Auth\ResetPasswordController@showResetForm         | web        |
+|        | POST      | products                       | products.store                  | App\Http\Controllers\ProductController@store                            | web        |
+|        | GET|HEAD  | products                       | products.index                  | App\Http\Controllers\ProductController@index                            | web        |
+|        | GET|HEAD  | products/create                | products.create                 | App\Http\Controllers\ProductController@create                           | web        |
+|        | PUT|PATCH | products/{product}             | products.update                 | App\Http\Controllers\ProductController@update                           | web        |
+|        | DELETE    | products/{product}             | products.destroy                | App\Http\Controllers\ProductController@destroy                          | web        |
+|        | GET|HEAD  | products/{product}             | products.show                   | App\Http\Controllers\ProductController@show                             | web        |
+|        | GET|HEAD  | products/{product}/edit        | products.edit                   | App\Http\Controllers\ProductController@edit                             | web        |
+|        | POST      | profile                        | profile.store                   | App\Http\Controllers\ProfileContoller@store                             | web        |
+|        | GET|HEAD  | profile                        | profile.index                   | App\Http\Controllers\ProfileContoller@index                             | web        |
+|        | GET|HEAD  | profile/create                 | profile.create                  | App\Http\Controllers\ProfileContoller@create                            | web        |
+|        | DELETE    | profile/{profile}              | profile.destroy                 | App\Http\Controllers\ProfileContoller@destroy                           | web        |
+|        | PUT|PATCH | profile/{profile}              | profile.update                  | App\Http\Controllers\ProfileContoller@update                            | web        |
+|        | GET|HEAD  | profile/{profile}              | profile.show                    | App\Http\Controllers\ProfileContoller@show                              | web        |
+|        | GET|HEAD  | profile/{profile}/edit         | profile.edit                    | App\Http\Controllers\ProfileContoller@edit                              | web        |
+|        | POST      | register                       |                                 | App\Http\Controllers\Auth\RegisterController@register                   | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | GET|HEAD  | register                       | register                        | App\Http\Controllers\Auth\RegisterController@showRegistrationForm       | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | POST      | reset-password                 | password.update                 | Laravel\Fortify\Http\Controllers\NewPasswordController@store            | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | GET|HEAD  | reset-password/{token}         | password.reset                  | Laravel\Fortify\Http\Controllers\NewPasswordController@create           | web        |
+|        |           |                                |                                 |                                                                         | guest      |
+|        | POST      | user/confirm-password          |                                 | Laravel\Fortify\Http\Controllers\ConfirmablePasswordController@store    | web        |
+|        |           |                                |                                 |                                                                         | auth       |
+|        | GET|HEAD  | user/confirm-password          | password.confirm                | Laravel\Fortify\Http\Controllers\ConfirmablePasswordController@show     | web        |
+|        |           |                                |                                 |                                                                         | auth       |
+|        | GET|HEAD  | user/confirmed-password-status | password.confirmation           | Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController@show | web        |
+|        |           |                                |                                 |                                                                         | auth       |
+|        | PUT       | user/password                  | user-password.update            | Laravel\Fortify\Http\Controllers\PasswordController@update              | web        |
+|        |           |                                |                                 |                                                                         | auth       |
+|        | PUT       | user/profile-information       | user-profile-information.update | Laravel\Fortify\Http\Controllers\ProfileInformationController@update    | web        |
+|        |           |                                |                                 |                                                                         | auth       |
++--------+-----------+--------------------------------+---------------------------------+-------------------------------------------------------------------------+------------+

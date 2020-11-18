@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileContoller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// HomeController
-Route::get('/', [HomeController::class, "index"] )->name("pages.home");
+// HomePageController
+Route::get('/', [HomePageController::class, "index"] )->name("pages.home");
 
 //ProductController
 Route::resource('/products', ProductController::class);
+
+//ProfileController
+Route::resource('/profile', ProfileContoller::class);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
