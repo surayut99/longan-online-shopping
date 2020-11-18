@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -36,5 +41,19 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function prelogin(Request $request){
+        $request->validate([
+            'username' => "required",
+            'password' => "required"
+        ]);
+        $user = User::where('username','=',$request
+        ->input('username'))->first();
+        if(Hash::check($request->input('password'),$user->password)){
+        Auth::login($user);
+        return redirect()->route('pages.home');
+        }
+        return redirect()->back() ->withInput()->withErrors(['password' => 'Sorry…password has no']);
     }
 }

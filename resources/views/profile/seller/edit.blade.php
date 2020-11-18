@@ -35,7 +35,7 @@
                 @enderror
             </div>
         </div>
-        <button type="submit" class="btn btn-info">ยืนยันการแก้ไข</button>
+        <button type="submit" class="btn btn-success">ยืนยันการแก้ไข</button>
     </form>
 </div>
 

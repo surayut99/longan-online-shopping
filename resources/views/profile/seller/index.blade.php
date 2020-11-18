@@ -3,11 +3,9 @@
 @section('content')
 <div class="container">
     <h1>ข้อมูลผู้ขาย</h1>
-    <h1>{{$user->name}}</h1>
-    <h1>{{$user->bank_name}}</h1>
-    <h1>{{$user->bank_number}}</h1>
-    <form action="{{route('profile.edit', ['profile'=>$user->user_id])}}">
-        <button type="submit" class="btn btn-info">แก้ไขข้อมูลผู้ขาย</button>
-    </form>
+    <h4>ชื่อ: {{$user->name}}</h4>
+    <h4>ธนาคาร: {{$user->bank_name}}</h4>
+    <h4>เลขบัญชี: {{$user->bank_number}}</h4>
+    <a class="btn btn-warning" href="{{route('profile.edit', ['profile'=>$user->user_id])}}">แก้ไขข้อมูลผู้ขาย</a>
 </div>
 @endsection

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PreValidateController;
+use App\Models\Customer;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Rules\TelNumberRule;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -67,10 +70,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             // 'name' => $data['name'],
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
         ]);
+        $customer = new Customer();
+        $customer->user_id = $user->id;
+        $customer->name = $data['name'];
+        $customer->telephone = $data['telephone'];
+        $customer->address = $data['address'];
+        $customer->save();
+        return $user ;
     }
 }
