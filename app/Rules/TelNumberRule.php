@@ -37,6 +37,6 @@ class TelNumberRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง';
     }
 }

@@ -26,7 +26,10 @@ class CreateOrdersTable extends Migration
             $table->string("recv_address");
             $table->string("recv_tel");
             $table->string("comment")->nullable();
-            $table->string("img_path");
+            $table->string("img_path")->nullable();
+
+            $table->float("amount");
+            $table->float("price_per_unit");
 
             $table->dateTime("expired_at")->nullable();
             $table->timestamps(); // contain ordered_at and verified_at/cancelled_at/deliveried_at/purchased_at depending on order status

@@ -15,17 +15,10 @@
 
                             <div class="col-md-6">
                                 <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" autocomplete="username" autofocus>
-
                                 @error('username')
-                                @if(strpos($message,'no'))
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>ไม่พบชื่อผู้ใช้นี้</strong>
+                                    <strong>{{$message}}</strong>
                                 </span>
-                                @else
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกชื่อผู้ใช้</strong>
-                                </span>
-                                @endif
                                 @enderror
                             </div>
                         </div>
@@ -36,15 +29,9 @@
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="current-password">
                                 @error('password')
-                                @if(strpos($message,"no"))
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>รหัสผ่านไม่ถูกต้อง</strong>
+                                    <strong>{{$message}}</strong>
                                 </span>
-                                @else
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกรหัสผ่าน</strong>
-                                </span>
-                                @endif
                                 @enderror
                             </div>
                         </div>

@@ -23,19 +23,30 @@ class ProfileContoller extends Controller
      */
     public function index()
     {
+        $equal = ['purchasing'=> 'รอจ่าย', 'verifying'=> 'รอการยืนยัน', 'verified'=>'ยืนยันแล้ว', 'deliveried'=>'จัดส่งแล้ว','cancelled'=>'ยกเลิกออเดอร์'];
         if(!Auth::user()){
             return redirect()->route('login');
         }
         if(Auth::user()->role == 'customer'){
             $user = DB::table('customers')->where('user_id', '=', Auth::user()->id)->first();
+            $orders = DB::table('orders')->select("product_name",'orders.*')->join('products', 'products.id', '=', 'product_id')->orderBy("orders.created_at")->get();
+            foreach($orders as $order){
+                foreach($equal as $key => $value)
+                {
+                    if($order->status==$key){$order->status = $value;}
+                }
+            }
             return view("profile.customer.index", [
-                "user" => $user
+                "user" => $user,
+                "orders" => $orders,
             ]);
         }
         else{
             $user = DB::table('sellers')->where('user_id', '=', Auth::user()->id)->first();
+            $orders = DB::table('orders')->select("product_name",'orders.*')->join('products', 'products.id', '=', 'product_id')->orderBy("orders.created_at")->get();
             return view("profile.seller.index", [
-                "user" => $user
+                "user" => $user,
+                "orders" => $order
             ]);
         }
 

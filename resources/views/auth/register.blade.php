@@ -16,17 +16,10 @@
 
                             <div class="col-md-6">
                                 <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" autocomplete="username">
-
                                 @error('username')
-                                @if(strpos($message,'already'))
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>ชื่อผู้ใช้นี้ได้ลงทะเบียนแล้ว</strong>
+                                    <strong>{{$message}}</strong>
                                 </span>
-                                @else
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกชื่อผู้ใช้</strong>
-                                </span>
-                                @endif
                                 @enderror
                             </div>
                         </div>
@@ -36,17 +29,10 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" autocomplete="new-password">
-
                                 @error('password')
-                                @if(strpos($message,'8'))
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกรหัสผ่านมากกว่า 8 ตัว</strong>
+                                    <strong>{{$message}}</strong>
                                 </span>
-                                @elseif(strpos($message,'match'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกรหัสผ่านให้ตรงกัน</strong>
-                                </span>
-                                @endif
                                 @enderror
                             </div>
                         </div>
@@ -55,7 +41,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('ยืนยันรหัสผ่าน') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password-confirm" autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                             </div>
                         </div>
 
@@ -66,7 +52,7 @@
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name">
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกชื่อสำหรับจัดส่ง</strong>
+                                    <strong>{{$message}}</strong>
                                 </span>
                                 @enderror
                             </div>
@@ -79,7 +65,7 @@
                                 <input id="telephone" type="text" class="form-control @error('telephone') is-invalid @enderror" name="telephone" value="{{ old('telephone') }}" autocomplete="telephone">
                                 @error('telephone')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกเบอร์โทรให้ถูกต้อง</strong>
+                                    <strong>{{$message}}</strong>
                                 </span>
                                 @enderror
                             </div>
@@ -92,7 +78,7 @@
                                 <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" autocomplete="address">
                                 @error('address')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>กรุณากรอกที่อยู่สำหรับจัดส่ง</strong>
+                                    <strong>{{$message}}</strong>
                                 </span>
                                 @enderror
                             </div>

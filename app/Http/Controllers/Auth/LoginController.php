@@ -47,15 +47,18 @@ class LoginController extends Controller
         $request->validate([
             'username' => "required",
             'password' => "required"
+        ], [
+            'username.required' => 'กรุณาใส่ชื่อผู้ใช้',
+            'password.required' => 'กรุณาใส่รหัสผ่าน',
         ]);
         $user = User::where('username','=',$request->input('username'))->first();
         if(!$user){
-            return redirect()->back() ->withInput()->withErrors(['username' => 'Sorry…username has no']);
+            return redirect()->back() ->withInput()->withErrors(['username' => 'รหัสผ่านไม่ถูกต้อง']);
         }
         if(Hash::check($request->input('password'),$user->password)){
             Auth::login($user);
             return redirect()->route('pages.home');
         }
-        return redirect()->back() ->withInput()->withErrors(['password' => 'Sorry…password has no']);
+        return redirect()->back() ->withInput()->withErrors(['password' => 'รหัสผ่านไม่ถูกต้อง']);
     }
 }
