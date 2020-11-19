@@ -20,42 +20,50 @@
             <div class="form-row">
               <input type="file" id="inpImg" name="inpImg" accept="image/png, image/jpeg">
             </div>
-            @error('inpImg')
-            <p class="text-danger">กรุณาอัพโหลดรูปสินค้า</p>
-            @enderror
+            <div class="mt-1">
+              @error('inpImg')
+              <strong class="text-danger">{{$message}}</strong>
+              @enderror
+            </div>
           </div>
 
 
           <div class="my-1">
             <h4>ชื่อสินค้า: </h4>
             <div class="form-row">
-              <input value="" name="name" class="form-control" id="name">
+              <input value="{{old('name')}}" name="name" class="form-control @error('name') is-invalid @enderror" id="name">
             </div>
-            @error('name')
-            <p class="text-danger">กรุณากรอกชื่อสินค้า</p>
-            @enderror
+            <div class="mt-1">
+              @error('name')
+              <strong class="text-danger">{{$message}}</strong>
+              @enderror
+            </div>
           </div>
 
           <div class="my-1">
             <h4>ราคาต่อหน่วย: </h4>
             <div class="form-row">
-              <input value="" name="price" class="form-control" style="width: 5em" id="price">
+              <input value="{{old('price')}}" name="price" class="form-control @error('price') is-invalid @enderror" style="width: 5em" id="price">
               <label class="ml-2 pt-1">บาท/กิโลกรัม</label>
             </div>
-            @error('qty')
-            <p class="text-danger">กรุณากรอกราคาสินค้า</p>
-            @enderror
+            <div class="mt-1">
+              @error('price')
+              <strong class="text-danger">{{$message}}</strong>
+              @enderror
+            </div>
           </div>
 
           <div class="my-1">
             <h4>จำนวนที่เพิ่ม: </h4>
             <div class="form-row">
-              <input value="" name="qty" class="form-control" style="width: 5em" id="qty">
+              <input value="{{old('qty')}}" name="qty" class="form-control @error('qty') is-invalid @enderror" style="width: 5em" id="qty">
               <label class="ml-2 pt-1">กิโลกรัม</label>
             </div>
-            @error('qty')
-            <p class="text-danger">กรุณากรอกจำนวนสินค้า</p>
-            @enderror
+            <div class="mt-1">
+              @error('qty')
+              <strong class="text-danger">{{$message}}</strong>
+              @enderror
+            </div>
           </div>
 
           <button type="submit" class="btn btn-success my-3" href="">บันทึก</button>

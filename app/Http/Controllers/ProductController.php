@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = DB::table('lots')
-                ->select('products.*', DB::raw('max(lots.updated_at) as lastest_at'), DB::raw('sum(current_qty) as total'))
+                ->select('products.*', DB::raw('max(lots.created_at) as lastest_at'), DB::raw('sum(current_qty) as total'))
                 ->groupBy('product_id')->join('products', 'id', '=', 'product_id')
                 ->orderByDesc('lastest_at')
                 ->get();
@@ -46,17 +46,24 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        print_r($request->input());
-        print_r($request->file());
-        $request->validate([
+        $request->validate(
+             [
             "inpImg" => 'required',
-            "name" => 'required',
-            "price" => "required",
-            "qty" => "required"
+            "name" => ['required', 'unique:products,product_name'],
+            "price" => ["required", "numeric" ],
+            "qty" => ["required", "numeric"]
+        ],[
+            "inpImg.required" => "กรุณาอัพโหลดรูปสินค้า",
+            "name.required" => "กรุณาใส่ชื่อสินค้า",
+            "name.unique" => "มีชื่อสินค้านี้แล้ว",
+            "price.required" => "กรุณากรอกราคาสินค้า",
+            "price.numeric" => "กรุณากรอกข้อมูลเป็นตัวเลข",
+            "qty.required" => "กรุณากรอกจำนวนสินค้า",
+            "qty.numeric" => "กรุณากรอกข้อมูลเป็นตัวเลข",
         ]);
 
         $img = $request->file('inpImg');
-        $id = DB::table('products')->max('id');
+        $id = DB::table('products')->max('id') + 1;
         $filename = $id . ".jpg";
         $path = 'storage/pictures/products/';
         $img->move($path, $filename);
@@ -96,7 +103,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = DB::table('lots')
-                ->select('products.*', DB::raw('max(lots.updated_at) as lastest_at'), DB::raw('sum(current_qty) as total'))
+                ->select('products.*', DB::raw('max(lots.created_at) as lastest_at'), DB::raw('sum(current_qty) as total'))
                 ->groupBy('product_id')
                 ->join('products', 'id', '=', 'product_id')
                 ->where('id', '=', $id)
@@ -119,7 +126,47 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate(
+            [
+           "name" => ['required'],
+           "price" => ["required", "numeric" ],
+       ],[
+           "name.required" => "กรุณาใส่ชื่อสินค้า",
+           "price.required" => "กรุณากรอกราคาสินค้า",
+           "price.numeric" => "กรุณากรอกข้อมูลเป็นตัวเลข",
+       ]);
+
+       if ($request->toggleValue == "true") {
+        $request->validate(
+            ["qty" => ["required", "numeric"]],
+            [
+           "qty.required" => "กรุณากรอกจำนวนสินค้า",
+           "qty.numeric" => "กรุณากรอกข้อมูลเป็นตัวเลข",
+       ]);
+
+       $lot = new Lot();
+       $lot->product_id = $id;
+       $lot->added_qty = $request->qty;
+       $lot->current_qty = $request->qty;
+       $lot->save();
+       }
+
+       $product = Product::findOrFail($id);
+       $product->product_name = $request->name;
+       $product->price = $request->price;
+
+       $img = $request->file('inpImg');
+       if ($img) {
+        $filename = $id . ".jpg";
+        $path = 'storage/pictures/products/';
+        $img->move($path, $filename);
+
+        $product->product_img_path = $path . $filename;
+       }
+
+       $product->save();
+
+       return redirect()->route("products.index");
     }
 
     /**
