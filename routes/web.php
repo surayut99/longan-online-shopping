@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileContoller;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +33,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::post('/prelogin', [LoginController::class,'prelogin'])->name('prelogin');
+
+Route::resource('/order', OrderController::class);
+Route::post('/order/{product_id}', [OrderController::class,'createOrder'])->name("create_order");
+Route::get('/order/inform/{order_id}', [OrderController::class,'inform'])->name("inform_order");
+Route::put('/order/inform/{order_id}',[OrderController::class,'uploadPayment'])->name("upload_payment");

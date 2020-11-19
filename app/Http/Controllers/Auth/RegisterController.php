@@ -57,8 +57,17 @@ class RegisterController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'name' => ['required', 'string', 'max:255'],
-            'telephone' => ['required', 'max:10', 'min:10'],
+            'telephone' => ['required', new TelNumberRule()],
             'address' => ["required", 'string', 'max:255'],
+        ],[
+            'username.required' => 'กรุณากรอกชื่อผู้ใช้',
+            'username.unique' => 'มีชื่อผู้ใช้นี้แล้ว',
+            'password.required' => 'กรุณากรอกรหัสผ่าน',
+            'password.confirmed' => 'รหัสผ่านไม่ตรงกัน',
+            'password.min' => 'กรุณากรอกรหัสผ่านมากกว่า 8 ตัว',
+            'name.required' => 'กรุณากรอกชื่อ-สกุล',
+            'telephone.required' => 'กรุณากรอกเบอร์โทรศัพท์',
+            'address.required' => 'กรุณากรอกที่อยู่',
         ]);
     }
 

@@ -17,7 +17,7 @@
                     <p class="">ราคา: {{ $product->price }} บาท/กิโลกรัม</p>
                     <p class="">คงเหลือทั้งหมด: {{$product->total}} กิโลกรัม</p>
                     @if(Auth::check() && Auth::user()->role == 'customer')
-                    <a href="" class="btn btn-primary">สั่งซื้อเลย</a>
+                    <a href="{{route('order.show',['order'=>$product->id])}}" class="btn btn-primary">สั่งซื้อเลย</a>
                     @endif
                 </div>
             </div>
