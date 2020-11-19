@@ -38,9 +38,15 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" autocomplete="new-password">
 
                                 @error('password')
+                                @if(strpos($message,'8'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>กรุณากรอกรหัสผ่านมากกว่า 8 ตัว</strong>
                                 </span>
+                                @elseif(strpos($message,'match'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>กรุณากรอกรหัสผ่านให้ตรงกัน</strong>
+                                </span>
+                                @endif
                                 @enderror
                             </div>
                         </div>
@@ -49,7 +55,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('ยืนยันรหัสผ่าน') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password-confirm" autocomplete="new-password">
                             </div>
                         </div>
 

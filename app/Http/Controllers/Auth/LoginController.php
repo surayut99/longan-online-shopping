@@ -48,11 +48,13 @@ class LoginController extends Controller
             'username' => "required",
             'password' => "required"
         ]);
-        $user = User::where('username','=',$request
-        ->input('username'))->first();
+        $user = User::where('username','=',$request->input('username'))->first();
+        if(!$user){
+            return redirect()->back() ->withInput()->withErrors(['username' => 'Sorry…username has no']);
+        }
         if(Hash::check($request->input('password'),$user->password)){
-        Auth::login($user);
-        return redirect()->route('pages.home');
+            Auth::login($user);
+            return redirect()->route('pages.home');
         }
         return redirect()->back() ->withInput()->withErrors(['password' => 'Sorry…password has no']);
     }
