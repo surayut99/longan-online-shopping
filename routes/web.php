@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Authrntication
+Auth::routes();
+Route::post('/prelogin', [LoginController::class,'prelogin'])->name('prelogin');
+
 // HomePageController
 Route::get('/', [HomePageController::class, "index"] )->name("pages.home");
 
@@ -28,13 +32,8 @@ Route::resource('/products', ProductController::class);
 //ProfileController
 Route::resource('/profile', ProfileContoller::class);
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::post('/prelogin', [LoginController::class,'prelogin'])->name('prelogin');
-
-Route::resource('/order', OrderController::class);
+// OrderController
+Route::resource('/orders', OrderController::class);
 Route::post('/order/{product_id}', [OrderController::class,'createOrder'])->name("create_order");
 Route::get('/order/inform/{order_id}', [OrderController::class,'inform'])->name("inform_order");
 Route::put('/order/inform/{order_id}',[OrderController::class,'uploadPayment'])->name("upload_payment");

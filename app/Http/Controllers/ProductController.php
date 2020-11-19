@@ -6,6 +6,7 @@ use App\Models\Lot;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -17,6 +18,12 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if (Auth::check()) {
+            return redirect()->route('login');
+        }else if (Auth::user()->role != "seller") {
+            return redirect()->route("pages.home");
+        }
+
         $products = DB::table('lots')
                 ->select('products.*', DB::raw('max(lots.created_at) as lastest_at'), DB::raw('sum(current_qty) as total'))
                 ->groupBy('product_id')->join('products', 'id', '=', 'product_id')
@@ -35,6 +42,12 @@ class ProductController extends Controller
      */
     public function create()
     {
+        if (Auth::check()) {
+            return redirect()->route('login');
+        }else if (Auth::user()->role != "seller") {
+            return redirect()->route("pages.home");
+        }
+
         return view("product.create");
     }
 
@@ -91,7 +104,12 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = DB::table('products')->where("id","=", $id)->first();
+        $lot = DB::table('lots')->where("product_id","=",$id)->first();
+        return view("product.show",[
+            'product' => $product,
+            'lot' => $lot
+        ]);
     }
 
     /**
@@ -102,6 +120,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if (Auth::check()) {
+            return redirect()->route('login');
+        }else if (Auth::user()->role != "seller") {
+            return redirect()->route("pages.home");
+        }
+
         $product = DB::table('lots')
                 ->select('products.*', DB::raw('max(lots.created_at) as lastest_at'), DB::raw('sum(current_qty) as total'))
                 ->groupBy('product_id')
