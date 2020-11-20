@@ -21,9 +21,7 @@
                     </div>
                     <hr>
                     <div>
-
                         <hr>
-
                         <div>
                             <h6>สั่งซื้อเมื่อ: {{\Carbon\Carbon::parse($order->created_at)->timezone('Asia/Bangkok')->toDateTimeString()}}</h6>
                             <h6>ชำระเงินเมื่อ: {{\Carbon\Carbon::parse($order->updated_at)->timezone('Asia/Bangkok')->toDateTimeString()}}</h6>
@@ -35,34 +33,14 @@
                                 </h6>
                             </div>
                         </div>
-
-                    </div>
-
-                    <div class="d-flex lg-space-r">
-                        <form class action="{{ route("orders.accept", ["id" => $order->id])}}" METHOD="POST">
-                            @method('put')
-                            @csrf
-                            <button type="submit" class="btn btn-success">ยืนยัน</button>
-                        </form>
-
-                        <button onclick="collapseDelOpt()" id="deleteOpt" class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">ปฎิเสธ</button>
-                    </div>
-                    <form id="collapseExample" class="mt-3 collapse" action="{{ route('orders.reject', ['id' => $order->id]) }}" method="POST">
-                        @method('put')
-                        @csrf
-                        <label>คุณต้องการยกเลิกคำสั่งซื้อนี้หรือไม่</label>
                         <div>
-                            <button type="submit" class="btn btn-danger">ใช่</button>
-                            <button onclick="collapseDelOpt()" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">ไม่</button>
+                            <h5>รายละเอียดการจัดส่ง</h5>
+                            <p>{{$order->shipment_detail}}</p>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
-
-@section('script')
-<script src="{{asset("storage/js/confirmCancel.js")}}"></script>
 @endsection

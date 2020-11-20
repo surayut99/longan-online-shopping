@@ -36,7 +36,12 @@ Route::resource('/profile', ProfileContoller::class);
 Route::resource('/orders', OrderController::class);
 Route::put('orders/{id}/accept',[OrderController::class, "acceptPayment"])->name("orders.accept");
 Route::put('orders/{id}/reject',[OrderController::class, "rejectPayment"])->name("orders.reject");
+Route::put('orders/{id}/update-shipment',[OrderController::class, "updateShipment"])->name("orders.update_shipment");
+Route::get('orders/{id}/detail',[OrderController::class, "showOrderDetail"])->name("orders.show_detail");
 
 Route::get("/test", function() {
     return view("orders.success");
 });
+
+
+

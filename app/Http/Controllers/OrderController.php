@@ -39,12 +39,13 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "amount" => ["required", "numeric", "max:".$request->qty]
+            "amount" => ["required", "numeric", "max:".$request->qty,"min:1"]
         ],
         [
             "amount.required" => "กรุณากรอกจำนวนสินค้า",
-            "amount.numeric" => "กรุรณกรอกข้อมูลเป็นตัวเลข",
-            "amount.max" => "มีสินค้าไม่เพียงพอ"
+            "amount.numeric" => "กรุณากรอกข้อมูลเป็นตัวเลข",
+            "amount.max" => "มีสินค้าไม่เพียงพอ",
+            "amount.min" => "กรุณาสั่งซื้อสินค้ามากกว่า 1"
         ]
     );
 
@@ -101,7 +102,8 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $order = DB::table('orders')->select("product_name",'orders.*')->where("orders.id","=",$id)->join('products', 'products.id', '=', "product_id")->first();
+        return view('orders.shipmentDetail',['order' => $order]);
     }
 
     /**
@@ -179,7 +181,28 @@ class OrderController extends Controller
             "status" => "cancelled",
             "updated_at" => Carbon::now()
         ]);
-
+        $order = DB::table('orders')->where('id','=',$id)->first();
+        $lot = DB::table('lots')->where('product_id','=',$order->product_id)->orderBy('current_qty','desc')
+        ->first();
+        $newLot = $lot->current_qty+$order->amount;
+        DB::table('lots')->where('product_id','=',$order->product_id)->where('created_at','=',$lot->created_at)->update([
+            'current_qty' => $newLot,
+            "updated_at" => Carbon::now()
+        ]);
         return redirect()->route("profile.index");
+    }
+
+    public function updateShipment(Request $request, $id){
+        DB::table("orders")->where("id", '=', $id)->update([
+            "shipment_detail" => $request->shipment_detail,
+            "status" => 'deliveried',
+            "updated_at" => Carbon::now()
+        ]);
+        return redirect()->route('profile.index');
+    }
+
+    public function showOrderDetail($id){
+        $order = DB::table('orders')->select("product_name",'orders.*')->where("orders.id","=",$id)->join('products', 'products.id', '=', "product_id")->first();
+        return view('pages.orderDetail',['order' => $order]);
     }
 }
