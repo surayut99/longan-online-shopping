@@ -18,9 +18,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        if (Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('login');
-        }else if (Auth::user()->role != "seller") {
+        }
+        if (Auth::user()->role != "seller") {
             return redirect()->route("pages.home");
         }
 
@@ -42,9 +43,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        if (Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('login');
-        }else if (Auth::user()->role != "seller") {
+        }
+
+        if (Auth::user()->role != "seller") {
             return redirect()->route("pages.home");
         }
 
@@ -104,11 +107,13 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = DB::table('products')->where("id","=", $id)->first();
-        $lot = DB::table('lots')->where("product_id","=",$id)->first();
+        $product = DB::table('lots')
+                ->select('products.*', DB::raw('max(lots.created_at) as lastest_at'), DB::raw('sum(current_qty) as total'))
+                ->groupBy('product_id')->join('products', 'id', '=', 'product_id')
+                ->where('products.id', '=', $id)
+                ->first();
         return view("product.show",[
             'product' => $product,
-            'lot' => $lot
         ]);
     }
 
@@ -120,7 +125,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        if (Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }else if (Auth::user()->role != "seller") {
             return redirect()->route("pages.home");

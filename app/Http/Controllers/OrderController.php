@@ -48,22 +48,26 @@ class OrderController extends Controller
         ]
     );
 
+        $this->updateLot($request->product_id, $request->amount);
 
         $carbon = Carbon::now();
         $customer = DB::table('customers')->where("user_id","=", Auth::user()->id)->first();
+        $product = DB::table('products')->where('id', '=', $request->product_id)->first();
+        $seller = DB::table('sellers')->first();
 
-        $order = new Order();
+        $order = new Order;
         $order->user_id = Auth::user()->id;
         $order->product_id = $request->product_id ;
         $order->recv_name = $customer->name;
         $order->recv_address = $customer->address;
         $order->recv_tel = $customer->telephone;
-        $order->amount = $request->input("amount");
-        $order->price_per_unit = $request->price_per_unit;
-        $order->expired_at = $carbon;
-        $order->save();
+        $order->amount = $request->amount;
+        $order->price_per_unit = $product->price;
+        $order->expired_at = $carbon->addDays(2);
 
-        return redirect()->route("profile.index");
+
+        $order->save();
+        return view("orders.success", ['order' => $order, 'product' => $product, 'seller' => $seller]);
     }
 
     /**
@@ -74,7 +78,19 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!Auth::check()) {
+            return redirect()->route("login");
+        }
+
+        $order = DB::table('orders')->select("product_name",'orders.*')->where("orders.id","=",$id)->join('products', 'products.id', '=', "product_id")->first();
+        if (Auth::user()->role == "seller") {
+            return view("orders.verifying",[
+                'order' => $order
+            ]);
+        }
+        return view("orders.inform",[
+            'order' => $order
+        ]);
     }
 
     /**
@@ -98,6 +114,25 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            "inpImg" => "required"
+        ],
+        [
+            "inpImg.required" => "กรุณาอัพโหลดหลักฐานการชำระเงิน"
+        ]);
+        $img = $request->file('inpImg');
+        $order = Order::findOrFail($id);
+        $filename = $order->id . "." . $img->getClientOriginalExtension();
+        $path = 'storage/pictures/orders';
+        $img->move($path, $filename);
+        DB::table('orders')->where('id','=', $order->id)->update([
+            'img_path' => $path . "/" . $filename,
+            'status' => 'verifying',
+            "updated_at" => Carbon::now()
+
+        ]);
+
+        return redirect()->route('profile.index');
     }
 
     /**
@@ -111,44 +146,40 @@ class OrderController extends Controller
         //
     }
 
-    public function inform($id){
-        $order = DB::table('orders')->select("product_name",'orders.*')->where("orders.id","=",$id)->join('products', 'products.id', '=', "product_id")->first();
+    public function updateLot($id, $amount){
+        $lots = DB::table('lots')->where('product_id', '=', $id)->where('current_qty', '!=', 0)->orderBy('created_at')->get();
+        $index = 0;
 
-        return view("orders.inform",[
-            'order' => $order
+        while ($lots[$index]->current_qty < $amount) {
+            DB::table('lots')->where("product_id", '=', $lots[$index]->product_id)->where('created_at', '=', $lots[$index]->created_at)
+                    ->update([
+                        'current_qty' => 0,
+                        'updated_at' => Carbon::now()
+                        ]);
+            $index += 1;
+        }
+        $updateAmount = $lots[$index]->current_qty - $amount;
+        DB::table('lots')->where("product_id", '=', $lots[$index]->product_id)->where('created_at', '=', $lots[$index]->created_at)
+        ->update(['current_qty' => $updateAmount,
+                        'updated_at' => Carbon::now()
         ]);
-
-
     }
 
-    public function uploadPayment(Request $request, $id){
-        $order = Order::findOrFail($id);
-        $img = $request->file('inpImg');
-        $filename = $order->id . "." . $img->getClientOriginalExtension();
-        $path = 'storage/pictures/orders';
-        $img->move($path, $filename);
-        DB::table('orders')->where('id','=', $order->id)->update([
-            'img_path' => $path . "/" . $filename,
-            'status' => 'verifying'
+    public function acceptPayment($id) {
+        DB::table("orders")->where("id", '=', $id)->update([
+            "status" => "verified",
+            "updated_at" => Carbon::now()
         ]);
 
-        return redirect()->route('profile.index');
+        return redirect()->route("profile.index");
     }
 
-    public function createOrder(Request $request, $id){
-        $carbon = Carbon::now();
-        $customer = DB::table('customers')->where("user_id","=", Auth::user()->id)->first();
-        $product = DB::table('products')->where("id","=", $id)->first();
-        $order = new Order();
-        $order->user_id = Auth::user()->id;
-        $order->product_id = $id ;
-        $order->recv_name = $customer->name;
-        $order->recv_address = $customer->address;
-        $order->recv_tel = $customer->telephone;
-        $order->amount = $request->input("amount");
-        $order->price_per_unit = $product->price;
-        $order->expired_at = $carbon->addDays(2)->timezone("Asia/Bangkok");
-        $order->save();
+    public function rejectPayment($id) {
+        DB::table("orders")->where("id", '=', $id)->update([
+            "status" => "cancelled",
+            "updated_at" => Carbon::now()
+        ]);
+
         return redirect()->route("profile.index");
     }
 }

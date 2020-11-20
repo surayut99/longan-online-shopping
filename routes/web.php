@@ -34,6 +34,9 @@ Route::resource('/profile', ProfileContoller::class);
 
 // OrderController
 Route::resource('/orders', OrderController::class);
-Route::post('/order/{product_id}', [OrderController::class,'createOrder'])->name("create_order");
-Route::get('/order/inform/{order_id}', [OrderController::class,'inform'])->name("inform_order");
-Route::put('/order/inform/{order_id}',[OrderController::class,'uploadPayment'])->name("upload_payment");
+Route::put('orders/{id}/accept',[OrderController::class, "acceptPayment"])->name("orders.accept");
+Route::put('orders/{id}/reject',[OrderController::class, "rejectPayment"])->name("orders.reject");
+
+Route::get("/test", function() {
+    return view("orders.success");
+});

@@ -38,8 +38,8 @@
               @endif
             </td>
             <td>
-              @if($order->img_path||$order->status=='ยกเลิกออเดอร์') {{$order->status}}
-              @else <a class="btn btn-primary" href="{{route("inform_order",["order_id"=>$order->id])}}">แจ้งชำระเงิน</a>
+              @if($order->status != "purchasing") {{$status[$order->status]}}
+              @else <a class="btn btn-primary" href="{{route("orders.show",["order" => $order->id])}}">แจ้งชำระเงิน</a>
               @endif
             </td>
           </tr>

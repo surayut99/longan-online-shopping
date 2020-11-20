@@ -6,18 +6,17 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header" style="font-size:20px;font-weight: bold;">{{ __('รายละเอียดคำสั่งซื้อ') }}</div>
+        <div class="card-header" style="font-size:20px;font-weight: bold;">{{ __('รายละเอียดสินค้า') }}</div>
         <div class="card-body">
           <div class="col-md-6">
-            <img class="mb-2" style="width:200px" src="{{asset("$product->product_img_path")}}" alt="">
+            <img class="mb-2" style="width:200px" src="{{asset($product->product_img_path)}}" alt="">
           </div>
 
           <form method="POST" action="{{route("orders.store")}}">
             @csrf
             <div hidden>
               <input value="{{ $product->id }}" type="text" name="product_id" id="">
-              <input value="{{ $product->price }}" type="text" name="price_per_unit" id="">
-              <input value="{{ $lot->current_qty }}" type="text" name="qty" id="">
+              <input value="{{ $product->total }}" type="text" name="qty" id="">
             </div>
             <div class="">
               <h4 style="color:blue">ชื่อสินค้า: {{$product->product_name}}</h4>
@@ -26,7 +25,7 @@
               <h4>ราคาต่อกิโลกรัม: {{$product->price}} บาท</h4>
             </div>
             <div class="">
-              <h4 style="color:red">จำนวนคงเหลือ: {{$lot->current_qty}} กิโลกรัม</h4>
+              <h4 style="color:red">จำนวนคงเหลือ: {{$product->total}} กิโลกรัม</h4>
             </div>
             <div class="">
               <h4>จำนวนที่ต้องการ:</h4>
