@@ -39,13 +39,14 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "amount" => ["required", "numeric", "max:".$request->qty,"min:1"]
+            "amount" => ["required", "numeric", "max:".$request->qty,"min:1","integer"]
         ],
         [
             "amount.required" => "กรุณากรอกจำนวนสินค้า",
             "amount.numeric" => "กรุณากรอกข้อมูลเป็นตัวเลข",
             "amount.max" => "มีสินค้าไม่เพียงพอ",
-            "amount.min" => "กรุณาสั่งซื้อสินค้ามากกว่า 1"
+            "amount.min" => "กรุณาสั่งซื้อสินค้ามากกว่า 1",
+            "amount.integer" => "กรุณากรอกข้อมูลเป็นจำนวนเต็ม"
         ]
     );
 

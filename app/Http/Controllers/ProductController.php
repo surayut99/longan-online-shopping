@@ -158,7 +158,7 @@ class ProductController extends Controller
         $request->validate(
             [
            "name" => ['required'],
-           "price" => ["required", "numeric" ],
+           "price" => ["required", "numeric"],
        ],[
            "name.required" => "กรุณาใส่ชื่อสินค้า",
            "price.required" => "กรุณากรอกราคาสินค้า",
@@ -167,10 +167,11 @@ class ProductController extends Controller
 
        if ($request->toggleValue == "true") {
         $request->validate(
-            ["qty" => ["required", "numeric"]],
+            ["qty" => ["required", "numeric","integer"]],
             [
            "qty.required" => "กรุณากรอกจำนวนสินค้า",
            "qty.numeric" => "กรุณากรอกข้อมูลเป็นตัวเลข",
+           "qty.integer" => "กรุณากรอกข้อมูลเป็นจำนวนเต็ม"
        ]);
 
        $lot = new Lot();
