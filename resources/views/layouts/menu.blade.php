@@ -9,9 +9,6 @@
     </div>
     <div class="d-flex ml-auto">
         @auth
-        @if(Auth::user()->role == 'seller')
-        <a class="nav-link" href={{route('products.index')}}>จัดการสินค้า</a>
-        @endif
         <a class="nav-link" href="{{route('profile.index')}}">โปรไฟล์</a>
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

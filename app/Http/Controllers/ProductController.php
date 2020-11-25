@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Lot;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -209,4 +210,11 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function cart(Request $request)
+    {
+        $carts = Cart::addCart($request->product_id,$request->amount);
+        return view('product.cart',['cart'=>$carts]);
+    }
+
 }

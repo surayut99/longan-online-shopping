@@ -28,6 +28,7 @@ Route::get('/', [HomePageController::class, "index"] )->name("pages.home");
 
 //ProductController
 Route::resource('/products', ProductController::class);
+Route::post('/products/carts',[ ProductController::class,'cart'])->name('cart.show');
 
 //ProfileController
 Route::resource('/profile', ProfileContoller::class);
