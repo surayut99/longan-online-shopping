@@ -12,8 +12,8 @@
     </div>
     <div class="col-md-12 mt-4">
         <div class="card">
-            <div class="card-header" style="font-size:20px;font-weight: bold;">{{ __('รายการสั่งซื้อทั้งหมด') }}</div>
-            <table class="table table-bordered table-striped">
+            {{-- <div class="card-header" style="font-size:20px;font-weight: bold;">{{ __('รายการสั่งซื้อทั้งหมด') }}</div> --}}
+        {{-- <table class="table table-bordered table-striped">
                 <thead>
                     <tr class="text-center table-info">
                         <th>ชื่อสินค้า</th>
@@ -28,22 +28,22 @@
                     @foreach($orders as $order)
                     <tr class="text-center">
                         <td>{{$order->product_name}}</td>
-                        <td>{{$order->amount}}</td>
-                        <td>{{$order->price_per_unit}}</td>
-                        <td>{{$order->amount*$order->price_per_unit}}</td>
-                        <td>
-                            {{$status[$order->status]}}
-                        </td>
-                        <td>
-                            @if($order->status == "purchasing") <a class="btn btn-primary" href="{{route("orders.show",["order" => $order->id])}}">แจ้งชำระเงิน</a>
-                            @else <a class="btn btn-info" href="{{route("orders.show_detail",["id" => $order->id])}}">แสดงรายละเอียด</a>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <td>{{$order->amount}}</td>
+        <td>{{$order->price_per_unit}}</td>
+        <td>{{$order->amount*$order->price_per_unit}}</td>
+        <td>
+            {{$status[$order->status]}}
+        </td>
+        <td>
+            @if($order->status == "purchasing") <a class="btn btn-primary" href="{{route("orders.show",["order" => $order->id])}}">แจ้งชำระเงิน</a>
+            @else <a class="btn btn-info" href="{{route("orders.show_detail",["id" => $order->id])}}">แสดงรายละเอียด</a>
+            @endif
+        </td>
+        </tr>
+        @endforeach
+        </tbody>
+        </table> --}}
     </div>
+</div>
 </div>
 @endsection

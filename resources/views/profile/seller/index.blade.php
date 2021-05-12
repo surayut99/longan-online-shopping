@@ -7,7 +7,7 @@
         <h5>ชื่อ: {{$user->name}}</h5>
         <h5>ธนาคาร: {{$user->bank_name}}</h5>
         <h5>เลขบัญชี: {{$user->bank_number}}</h5>
-        <a class="btn btn-warning" href="{{route('profile.edit', ['profile'=>$user->user_id])}}">แก้ไขข้อมูลผู้ขาย</a>
+        {{-- <a class="btn btn-warning" href="{{route('profile.edit', ['profile'=>$user->user_id])}}">แก้ไขข้อมูลผู้ขาย</a> --}}
     </div>
 
     <div class="col-md-12 mt-4">

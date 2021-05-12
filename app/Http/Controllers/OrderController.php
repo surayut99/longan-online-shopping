@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,28 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $status = ['purchasing'=>'รอจ่าย', 'verifying'=> 'รอการยืนยัน', 'verified'=>'ยืนยันแล้ว', 'deliveried'=>'จัดส่งแล้ว','cancelled'=>'ยกเลิก'];
+        if(!Auth::user()){
+            return redirect()->route('login');
+        }
+        if(Auth::user()->role == 'customer'){
+            $user = DB::table('customers')->where('user_id', '=', Auth::user()->id)->first();
+            $orders = DB::table('orders')->select("product_name",'orders.*')->join('products', 'products.id', '=', 'product_id')->orderBy("orders.created_at")->get();
+
+            return view("orders.index", [
+                "user" => $user,
+                "orders" => $orders,
+                "status" => $status
+            ]);
+        }
+
+        $user = DB::table('sellers')->where('user_id', '=', Auth::user()->id)->first();
+        $orders = DB::table('orders')->select("product_name",'orders.*')->join('products', 'products.id', '=', 'product_id')->orderBy("orders.created_at")->get();
+        return view("orders.index", [
+            "user" => $user,
+            "orders" => $orders,
+            "status" => $status
+        ]);
     }
 
     /**
@@ -86,8 +108,10 @@ class OrderController extends Controller
 
         $order = DB::table('orders')->select("product_name",'orders.*')->where("orders.id","=",$id)->join('products', 'products.id', '=', "product_id")->first();
         if (Auth::user()->role == "seller") {
+            $payment = DB::table('payments')->where('order_id','=',$id)->first();
             return view("orders.verifying",[
-                'order' => $order
+                'order' => $order,
+                'payment' => $payment,
             ]);
         }
         return view("orders.inform",[
@@ -118,11 +142,20 @@ class OrderController extends Controller
     {
         //
         $request->validate([
-            "inpImg" => "required"
+            "inpImg" => "required",
+            "bank_name" => 'required',
+            'amount' => 'required|numeric'
         ],
         [
-            "inpImg.required" => "กรุณาอัพโหลดหลักฐานการชำระเงิน"
+            "inpImg.required" => "กรุณาอัพโหลดหลักฐานการชำระเงิน",
+            "bank_name.required" => "กรุณากรอกข้อมูล",
+            "amount.required" => "กรุณากรอกข้อมูล",
+            "amount.numeric" => "กรุณากรอกข้อมูล",
+
         ]);
+
+        $payment = new Payment();
+        $payment->order_id = $id;
         $img = $request->file('inpImg');
         $order = Order::findOrFail($id);
         $filename = $order->id . "." . $img->getClientOriginalExtension();
@@ -134,6 +167,11 @@ class OrderController extends Controller
             "updated_at" => Carbon::now()
 
         ]);
+        $payment->img_path = $path . "/" . $filename;
+        $payment->amount = $request->inuout('amount');
+        $payment->bank_name = $request->inuout('bank_name');
+        $payment->user_id = Auth::user()->id;
+        $payment->save();
 
         return redirect()->route('profile.index');
     }
@@ -161,6 +199,7 @@ class OrderController extends Controller
                         ]);
             $index += 1;
         }
+
         $updateAmount = $lots[$index]->current_qty - $amount;
         DB::table('lots')->where("product_id", '=', $lots[$index]->product_id)->where('created_at', '=', $lots[$index]->created_at)
         ->update(['current_qty' => $updateAmount,
@@ -177,7 +216,14 @@ class OrderController extends Controller
         return redirect()->route("profile.index");
     }
 
-    public function rejectPayment($id) {
+    public function rejectPayment($id, Request $request) {
+
+        $request->validate([
+            'comment' => 'required'
+        ],[
+            'comment.required' => "กรุณากรอกสาเหตุการปฏิเสธรายการสั่งซื้อนี้"
+        ]);
+
         DB::table("orders")->where("id", '=', $id)->update([
             "status" => "cancelled",
             "updated_at" => Carbon::now()
@@ -188,12 +234,18 @@ class OrderController extends Controller
         $newLot = $lot->current_qty+$order->amount;
         DB::table('lots')->where('product_id','=',$order->product_id)->where('created_at','=',$lot->created_at)->update([
             'current_qty' => $newLot,
-            "updated_at" => Carbon::now()
+            "updated_at" => Carbon::now(),
+            'comment' => $request->comment,
         ]);
         return redirect()->route("profile.index");
     }
 
     public function updateShipment(Request $request, $id){
+        $request->validate([
+            'shipment_detail' => 'required'
+        ],[
+            'shipment_detail.required' => "กรุณากรอกข้อมูลการจัดส่ง"
+        ]);
         DB::table("orders")->where("id", '=', $id)->update([
             "shipment_detail" => $request->shipment_detail,
             "status" => 'deliveried',
@@ -206,4 +258,6 @@ class OrderController extends Controller
         $order = DB::table('orders')->select("product_name",'orders.*')->where("orders.id","=",$id)->join('products', 'products.id', '=', "product_id")->first();
         return view('pages.orderDetail',['order' => $order]);
     }
+
+
 }

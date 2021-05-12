@@ -20,7 +20,10 @@
                     <form class="lg-space-b" method="POST" action="{{route('orders.update_shipment', ['id'=>$order->id])}}">
                         @method('put')
                         @csrf
-                        <textarea name="shipment_detail" cols="90" rows="5" placeholder="ช่องทางการจัดส่ง, เลขพัสดุ"></textarea>
+                        <textarea class=" form-control @error('shipment_detail') is-invalid @enderror" name="shipment_detail" cols="90" rows="5" placeholder="ช่องทางการจัดส่ง, เลขพัสดุ"></textarea>
+                        @error('shipment_detail')
+                        <strong class="text-danger">{{$message}}</strong><br>
+                        @enderror
                         <button type="submit" class="btn btn-success">เพิ่มข้อมูล</button>
                     </form>
                 </div>

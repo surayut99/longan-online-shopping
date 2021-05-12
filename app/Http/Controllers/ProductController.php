@@ -217,4 +217,13 @@ class ProductController extends Controller
         return view('product.cart',['cart'=>$carts]);
     }
 
+    public function report() {
+    // {
+    //     $lots = DB::table('lots')->join('products','products.id','=','lots.product_id')
+    //     ->groupBy('lots.product_id')->select('product_id',DB::raw('sum(product_id) as sum_product'))
+    //     ->groupBy('product_id')->limit(7)->get();
+    $lots = DB::table('lots')->select('products.*', DB::raw('sum(current_qty) as curr'), DB::raw('sum(added_qty) as added'))->groupBy('product_id')->join('products', 'id', '=', 'product_id')->get();
+        return view('product.report',['lots'=>$lots]);
+    }
+
 }

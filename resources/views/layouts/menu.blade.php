@@ -9,11 +9,18 @@
     </div>
     <div class="d-flex ml-auto">
         @auth
+        <a class="nav-link" href="{{route('orders.index')}}">รายการสั่งซื้อ</a>
+        @if(Auth::user()->role=="seller")
+        <a class="nav-link" href="{{route('report')}}">รายงาน</a>
+        @endif
         <a class="nav-link" href="{{route('profile.index')}}">โปรไฟล์</a>
         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
             {{ __('ออกจากระบบ') }}
         </a>
+        @if( Auth::check())
+        <a style="color:green" class="nav-link">{{Auth::user()->username}}</a>
+        @endif
 
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
             @csrf

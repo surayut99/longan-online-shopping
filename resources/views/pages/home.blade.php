@@ -11,8 +11,8 @@
         <div class="my-3 d-flex lg-flex lg-space-r">
             @foreach($products as $product)
             <div class="card my-3" style="width: 15rem">
-                <div style="height: 15rem;" class="lg-fill">
-                    <img class="lg-img" src="{{asset($product->product_img_path)}}">
+                <div style="height: 15rem;" class="lg-fill text-center pt-3">
+                    <img class="lg-img" src="{{asset($product->product_img_path)}}" style="object-fit: cover;width:200px;height:200px">
                 </div>
                 <div class="card-body lg-space-p">
                     <h3 class="card-title">{{ $product->product_name }}</h3>

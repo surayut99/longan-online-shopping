@@ -11,6 +11,7 @@
                     <h6>หลักฐานการชำระเงิน</h6>
                     <div class="mt-1 d-flex justify-content-around">
                         <img src="{{asset($order->img_path)}}" width="50%">
+
                         <div>
                             <h5>รายการสั่งซื้อที่: {{ $order->id}}</h5>
                             <h5>ชื่อสินค้า: {{ $order->product_name}}</h5>
@@ -45,13 +46,17 @@
                             <button type="submit" class="btn btn-success">ยืนยัน</button>
                         </form>
 
-                        <button onclick="collapseDelOpt()" id="deleteOpt" class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">ปฎิเสธ</button>
+                        <button onclick="collapseDelOpt()" id="deleteOpt" class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">ปฏิเสธ</button>
                     </div>
+                    @error('comment')
+                    <strong class="text-danger">{{$message}}</strong><br>
+                    @enderror
                     <form id="collapseExample" class="mt-3 collapse" action="{{ route('orders.reject', ['id' => $order->id]) }}" method="POST">
                         @method('put')
                         @csrf
                         <label>คุณต้องการยกเลิกคำสั่งซื้อนี้หรือไม่</label>
                         <div>
+                            <textarea name="comment" id="" cols="30" rows="3" palceholder="เหตุผลการปฏิเสธการสั่งซื้อ" class="@error('comment') is-invalid @enderror"></textarea><br>
                             <button type="submit" class="btn btn-danger">ใช่</button>
                             <button onclick="collapseDelOpt()" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">ไม่</button>
                         </div>

@@ -12,7 +12,7 @@
                         <img class="mb-2" style="width:200px" src="{{asset($product->product_img_path)}}" alt="">
                     </div>
 
-                    <form method="POST" action="{{route("cart.show")}}">
+                    <form method="POST" action="{{route("orders.index")}}">
                         @csrf
                         <div hidden>
                             <input value="{{ $product->id }}" type="text" name="product_id" id="">
