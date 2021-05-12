@@ -14,7 +14,7 @@
         <a class="nav-link" href="{{route('report')}}">รายงาน</a>
         @endif
         <a class="nav-link" href="{{route('profile.index')}}">โปรไฟล์</a>
-        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+        <a class="nav-link text-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
             {{ __('ออกจากระบบ') }}
         </a>

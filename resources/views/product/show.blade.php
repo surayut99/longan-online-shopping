@@ -17,15 +17,15 @@
                         <div hidden>
                             <input value="{{ $product->id }}" type="text" name="product_id" id="">
                             <input value="{{ $product->total }}" type="text" name="qty" id="">
-                        </div>
+                        </div><br>
                         <div class="">
-                            <h4 style="color:blue">ชื่อสินค้า: {{$product->product_name}}</h4>
+                            <h2>ชื่อสินค้า: {{$product->product_name}}</h2><br>
                         </div>
                         <div class="">
                             <h4>ราคาต่อกิโลกรัม: {{$product->price}} บาท</h4>
                         </div>
                         <div class="">
-                            <h4 style="color:red">จำนวนคงเหลือ: {{$product->total}} กิโลกรัม</h4>
+                            <h4>จำนวนคงเหลือ: {{$product->total}} กิโลกรัม</h4>
                         </div>
                         <div class="">
                             <h4>จำนวนที่ต้องการ:</h4>
