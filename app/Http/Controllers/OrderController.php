@@ -168,8 +168,8 @@ class OrderController extends Controller
 
         ]);
         $payment->img_path = $path . "/" . $filename;
-        $payment->amount = $request->inuout('amount');
-        $payment->bank_name = $request->inuout('bank_name');
+        $payment->amount = $request->input('amount');
+        $payment->bank_name = $request->input('bank_name');
         $payment->user_id = Auth::user()->id;
         $payment->save();
 
@@ -229,13 +229,13 @@ class OrderController extends Controller
             "updated_at" => Carbon::now()
         ]);
         $order = DB::table('orders')->where('id','=',$id)->first();
+        $order->comment = $request->input('comment');
         $lot = DB::table('lots')->where('product_id','=',$order->product_id)->orderBy('current_qty','desc')
         ->first();
         $newLot = $lot->current_qty+$order->amount;
         DB::table('lots')->where('product_id','=',$order->product_id)->where('created_at','=',$lot->created_at)->update([
             'current_qty' => $newLot,
             "updated_at" => Carbon::now(),
-            'comment' => $request->comment,
         ]);
         return redirect()->route("profile.index");
     }

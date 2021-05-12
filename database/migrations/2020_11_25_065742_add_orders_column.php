@@ -14,8 +14,8 @@ class AddOrdersColumn extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('bank_name');
-            $table->float('amount_money');
+            $table->string('bank_name')->default('');
+            $table->float('amount_money')->default(-1);
         });
     }
 

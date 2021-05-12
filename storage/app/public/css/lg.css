@@ -45,3 +45,10 @@
 .lg-fill {
     overflow: hidden;
 }
+
+.shrink-text {
+    max-width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

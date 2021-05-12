@@ -19,7 +19,7 @@
             <td>{{$order->product_name}}</td>
             <td>{{$order->amount*$order->price_per_unit}}</td>
             <td>
-                {{$status[$order->status]}}
+                <p class={{$status[$order->status] == "ยกเลิก" ? 'text-danger':''}}>{{$status[$order->status]}}</p>
                 @if(\Carbon\Carbon::parse($order->expired_at)->lt(\Carbon\Carbon::now()) && $order->status == "purchasing")
                 <br>
                 <strong class="text-danger">
